@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function MyHeader() {
   return (
     <>
-      <Navbar color='success' className='sticky-top'>
+      <Navbar color='success'>
         <NavbarBrand className='pl-2 pt-2 pb-2'>
           <h1>Lambda Eats</h1>
         </NavbarBrand>

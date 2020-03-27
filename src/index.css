@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
-.jumbotron {
-  height: 100vh;
+html {
+  background: url(./Assets/Pizza.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
