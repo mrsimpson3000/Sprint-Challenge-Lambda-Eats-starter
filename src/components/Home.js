@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Jumbotron, Button, Row, Col } from "reactstrap";
+import { Link } from "react-router-dom";
 import bgimage from "../Assets/Pizza.jpg";
 
 export default function Home() {
@@ -24,7 +25,9 @@ export default function Home() {
               sm={{ size: "auto", offset: 5 }}
               md={{ size: "auto", offset: 5 }}
             >
-              <Button color='primary'>Order Pizza</Button>
+              <Link to='/pizza'>
+                <Button color='primary'>Order Pizza</Button>
+              </Link>
             </Col>
           </Row>
         </Container>
