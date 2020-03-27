@@ -137,7 +137,7 @@ export default function MyForm() {
                   </Col>
                 </Row>
                 <Row form>
-                  <Col md={6}>
+                  <Col md={{ size: 4, offset: 2 }}>
                     <FormGroup>
                       <legend>Choose Toppings</legend>
                       <FormGroup check>
@@ -197,7 +197,74 @@ export default function MyForm() {
                       </FormGroup>
                     </FormGroup>
                   </Col>
-                  <Col md={6}></Col>
+                  <Col md={{ size: 4, offset: 2 }}>
+                    <FormGroup>
+                      <legend>Choose Toppings</legend>
+                      <FormGroup check>
+                        <Label htmlFor='pepperoni' />
+                        <Input
+                          id='pepperoni'
+                          type='checkbox'
+                          name='pepperoni'
+                        />
+                        Pepperoni
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='sausage' />
+                        <Input id='sausage' type='checkbox' name='sausage' />
+                        Sausage
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='canadianBacon' />
+                        <Input
+                          id='canadianBacon'
+                          type='checkbox'
+                          name='canadianBacon'
+                        />
+                        Canadian Bacon
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='italianSausage' />
+                        <Input
+                          id='italianSausage'
+                          type='checkbox'
+                          name='italianSausage'
+                        />
+                        Spicey Italian Sausage
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='grilledChicken' />
+                        <Input
+                          id='grilledChicken'
+                          type='checkbox'
+                          name='grilledChicken'
+                        />
+                        Grilled Chicken
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='onions' />
+                        <Input id='onions' type='checkbox' name='onions' />
+                        Onions
+                      </FormGroup>
+                      <FormGroup check>
+                        <Label htmlFor='greenPepper' />
+                        <Input
+                          id='greenPepper'
+                          type='checkbox'
+                          name='greenPepper'
+                        />
+                        Green Pepper
+                      </FormGroup>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row form>
+                  <Col
+                    sm={{ size: "auto", offset: 5 }}
+                    md={{ size: "auto", offset: 5 }}
+                  >
+                    <Button color='primary'>Place Order</Button>
+                  </Col>
                 </Row>
               </Form>
             </CardBody>
