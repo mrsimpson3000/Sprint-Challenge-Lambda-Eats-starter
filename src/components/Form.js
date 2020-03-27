@@ -20,7 +20,24 @@ const formSchema = yup.object().shape({
   name: yup
     .string()
     .min(2)
-    .required("Must have a name for the order")
+    .required("Must have a name for the order"),
+  pizzaSize: yup.string(),
+  sauce: yup.string(),
+  pepperoni: yup.boolean().oneOf([true, false]),
+  sausage: yup.boolean().oneOf([true, false]),
+  canadianBacon: yup.boolean().oneOf([true, false]),
+  italianSausage: yup.boolean().oneOf([true, false]),
+  grilledChicken: yup.boolean().oneOf([true, false]),
+  onions: yup.boolean().oneOf([true, false]),
+  greenPepper: yup.boolean().oneOf([true, false]),
+  dicedTomatos: yup.boolean().oneOf([true, false]),
+  blackOlives: yup.boolean().oneOf([true, false]),
+  roastedGarlic: yup.boolean().oneOf([true, false]),
+  artichokeHearts: yup.boolean().oneOf([true, false]),
+  threeCheese: yup.boolean().oneOf([true, false]),
+  pineapple: yup.boolean().oneOf([true, false]),
+  extraCheese: yup.boolean().oneOf([true, false]),
+  textArea: yup.string()
 });
 
 export default function MyForm() {
@@ -33,22 +50,123 @@ export default function MyForm() {
     pizzaSize: "Large",
     sauce: "Normal",
     crust: "",
-    pepperoni: "",
-    sausage: "",
-    canadianBacon: "",
-    italianSausage: "",
-    grilledChicken: "",
-    onions: "",
-    greenPepper: "",
-    dicedTomatos: "",
-    blackOlives: "",
-    roastedGarlic: "",
-    artichokeHearts: "",
-    threeCheese: "",
-    pineapple: "",
-    extraCheese: "",
+    pepperoni: false,
+    sausage: false,
+    canadianBacon: false,
+    italianSausage: false,
+    grilledChicken: false,
+    onions: false,
+    greenPepper: false,
+    dicedTomatos: false,
+    blackOlives: false,
+    roastedGarlic: false,
+    artichokeHearts: false,
+    threeCheese: false,
+    pineapple: false,
+    extraCheese: false,
     textArea: ""
   });
+
+  // managing state for errors
+  const [errors, setErrors] = useState({
+    name: "",
+    pizzaSize: "Large",
+    sauce: "Normal",
+    crust: "",
+    pepperoni: false,
+    sausage: false,
+    canadianBacon: false,
+    italianSausage: false,
+    grilledChicken: false,
+    onions: false,
+    greenPepper: false,
+    dicedTomatos: false,
+    blackOlives: false,
+    roastedGarlic: false,
+    artichokeHearts: false,
+    threeCheese: false,
+    pineapple: false,
+    extraCheese: false,
+    textArea: ""
+  });
+
+  // state to set our post request to
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    formSchema.isValid(formState).then(valid => {
+      setButtonDisabled(!valid);
+    });
+  }, [formState]);
+
+  const formSubmit = event => {
+    event.preventDefault();
+    axios
+      .post("https://reqres.in/api/users", formState)
+      .then(response => {
+        setOrders([...orders, response.data]);
+        // reset form is success
+        setFormState({
+          name: "",
+          pizzaSize: "Large",
+          sauce: "Normal",
+          crust: "",
+          pepperoni: "",
+          sausage: "",
+          canadianBacon: "",
+          italianSausage: "",
+          grilledChicken: "",
+          onions: "",
+          greenPepper: "",
+          dicedTomatos: "",
+          blackOlives: "",
+          roastedGarlic: "",
+          artichokeHearts: "",
+          threeCheese: "",
+          pineapple: "",
+          extraCheese: "",
+          textArea: ""
+        });
+      })
+      .catch(error => console.log(error.response));
+  };
+
+  const validateChange = event => {
+    // Reach allows to reach into schema and test one part
+    yup
+      .reach(formSchema, event.target.name)
+      .validate(event.target.value)
+      .then(valid => {
+        setErrors({
+          ...errors,
+          [event.target.name]: ""
+        });
+      })
+      .catch(error => {
+        setErrors({ ...errors, [event.target.name]: error.errors[0] });
+      });
+  };
+
+  const inputChange = event => {
+    event.persist();
+    const newFormData = {
+      ...formState,
+      [event.target.name]:
+        event.target.type === "checkbox"
+          ? event.target.checked
+          : event.target.value
+    };
+    validateChange(event);
+    setFormState(newFormData);
+
+    // const isEmpty = object => {
+    //   for (var key in object) {
+    //     if (object.hasOwnProperty(key)) return false;
+    //   }
+    //   return true;
+    // };
+  };
+
   return (
     <>
       <Jumbotron
@@ -65,7 +183,7 @@ export default function MyForm() {
             <CardBody>
               <h3 className='text-center'>Build Your Pizza Your Way</h3>
               <hr />
-              <Form onSubmit='' className='p-2'>
+              <Form onSubmit={formSubmit} className='p-2'>
                 <Row form>
                   <Col md={{ size: 6, offset: 3 }}>
                     <FormGroup>
@@ -76,7 +194,7 @@ export default function MyForm() {
                         type='text'
                         name='name'
                         value={formState.name}
-                        onChange=''
+                        onChange={inputChange}
                       />
                     </FormGroup>
                   </Col>
@@ -91,7 +209,7 @@ export default function MyForm() {
                         type='select'
                         name='pizzaSize'
                         value={formState.pizzaSize}
-                        onChange=''
+                        onChange={inputChange}
                       >
                         <option value='Small'>Small</option>
                         <option value='Medium'>Medium</option>
@@ -107,7 +225,7 @@ export default function MyForm() {
                         type='select'
                         name='sauce'
                         value={formState.sauce}
-                        onChange=''
+                        onChange={inputChange}
                       >
                         <option value='Light'>Light</option>
                         <option value='Normal'>Normal</option>
@@ -176,6 +294,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='pepperoni'
                           checked={formState.pepperoni}
+                          onChange={inputChange}
                         />
                         Pepperoni
                       </FormGroup>
@@ -186,6 +305,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='sausage'
                           checked={formState.sausage}
+                          onChange={inputChange}
                         />
                         Sausage
                       </FormGroup>
@@ -196,6 +316,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='canadianBacon'
                           checked={formState.canadianBacon}
+                          onChange={inputChange}
                         />
                         Canadian Bacon
                       </FormGroup>
@@ -206,6 +327,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='italianSausage'
                           checked={formState.italianSausage}
+                          onChange={inputChange}
                         />
                         Spicey Italian Sausage
                       </FormGroup>
@@ -216,6 +338,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='grilledChicken'
                           checked={formState.grilledChicken}
+                          onChange={inputChange}
                         />
                         Grilled Chicken
                       </FormGroup>
@@ -226,6 +349,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='onions'
                           checked={formState.onions}
+                          onChange={inputChange}
                         />
                         Onions
                       </FormGroup>
@@ -236,6 +360,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='greenPepper'
                           checked={formState.greenPepper}
+                          onChange={inputChange}
                         />
                         Green Pepper
                       </FormGroup>
@@ -250,6 +375,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='dicedTomatos'
                           checked={formState.dicedTomatos}
+                          onChange={inputChange}
                         />
                         Diced Tomatos
                       </FormGroup>
@@ -260,6 +386,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='blackOlives'
                           checked={formState.blackOlives}
+                          onChange={inputChange}
                         />
                         Black Olives
                       </FormGroup>
@@ -270,6 +397,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='roastedGarlic'
                           checked={formState.roastedGarlic}
+                          onChange={inputChange}
                         />
                         Roasted Garlic
                       </FormGroup>
@@ -280,6 +408,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='artichokeHearts'
                           checked={formState.artichokeHearts}
+                          onChange={inputChange}
                         />
                         Artichoke Hearts
                       </FormGroup>
@@ -290,6 +419,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='threeCheese'
                           checked={formState.threeCheese}
+                          onChange={inputChange}
                         />
                         Three Cheese
                       </FormGroup>
@@ -300,6 +430,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='pineapple'
                           checked={formState.pineapple}
+                          onChange={inputChange}
                         />
                         Pineapple
                       </FormGroup>
@@ -310,6 +441,7 @@ export default function MyForm() {
                           type='checkbox'
                           name='extraCheese'
                           checked={formState.extraCheese}
+                          onChange={inputChange}
                         />
                         Extra Cheese
                       </FormGroup>
@@ -326,6 +458,7 @@ export default function MyForm() {
                         type='textarea'
                         name='textArea'
                         value={formState.textArea}
+                        onChange={inputChange}
                       />
                     </FormGroup>
                   </Col>
@@ -335,7 +468,11 @@ export default function MyForm() {
                     sm={{ size: "auto", offset: 5 }}
                     md={{ size: "auto", offset: 5 }}
                   >
-                    <Button color='primary' disabled={buttonDisabled}>
+                    <Button
+                      id='submitButton'
+                      disabled={buttonDisabled}
+                      color='primary'
+                    >
                       Place Order
                     </Button>
                   </Col>
@@ -345,6 +482,10 @@ export default function MyForm() {
           </Card>
         </Container>
       </Jumbotron>
+      <div>
+        {" "}
+        <pre>{JSON.stringify(orders, null, 2)}</pre>
+      </div>
     </>
   );
 }

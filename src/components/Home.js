@@ -26,7 +26,9 @@ export default function Home() {
               md={{ size: "auto", offset: 5 }}
             >
               <Link to='/pizza'>
-                <Button color='primary'>Order Pizza</Button>
+                <Button id='order' color='primary'>
+                  Order Pizza
+                </Button>
               </Link>
             </Col>
           </Row>
