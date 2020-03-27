@@ -137,9 +137,9 @@ export default function MyForm() {
                   </Col>
                 </Row>
                 <Row form>
+                  <legend className='text-center'>Choose Toppings</legend>
                   <Col md={{ size: 4, offset: 2 }}>
                     <FormGroup>
-                      <legend>Choose Toppings</legend>
                       <FormGroup check>
                         <Label htmlFor='pepperoni' />
                         <Input
@@ -199,7 +199,6 @@ export default function MyForm() {
                   </Col>
                   <Col md={{ size: 4, offset: 2 }}>
                     <FormGroup>
-                      <legend>Choose Toppings</legend>
                       <FormGroup check>
                         <Label htmlFor='pepperoni' />
                         <Input
